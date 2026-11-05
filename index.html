@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Untuk NAMA_DIA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <section id="cover">
+    <p class="kalimat">Hari ini hari spesialmu,<br>dan aku bikin sesuatu.</p>
+
+    <div class="amplop" id="amplop">
+      <div class="badan"></div>
+      <div class="kertas"></div>
+      <div class="depan"><span>Untuk NAMA_DIA</span></div>
+      <div class="flap"></div>
+    </div>
+
+    <button id="btn-buka" class="tombol">Lihat apa itu</button>
+  </section>
+
+  <main id="beranda" hidden>
+    <p class="kecil">16 November</p>
+    <h1>Selamat ulang tahun,<br><em>NAMA_DIA</em></h1>
+    <p class="sub">Yang ke-UMUR. Ketuk kotaknya satu per satu ya.</p>
+    <div id="kotak-list"></div>
+    <p class="ttd">Dari NAMA_KAMU</p>
+  </main>
+
+  <dialog id="popup">
+    <h2 id="popup-judul"></h2>
+    <div id="popup-isi"></div>
+    <button id="popup-tutup" class="tombol">Tutup</button>
+  </dialog>
+
+  <script src="script.js"></script>
+</body>
+</html>

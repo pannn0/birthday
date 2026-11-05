@@ -1,0 +1,205 @@
+:root {
+  --bg: #12060d;
+  --bg2: #2a0e1d;
+  --gading: #f4ece1;
+  --emas: #d4b483;
+  --anggur: #4a1428;
+}
+
+* { box-sizing: border-box; margin: 0; }
+[hidden] { display: none !important; }
+
+body {
+  min-height: 100vh;
+  background: radial-gradient(ellipse at 50% 0%, var(--bg2), var(--bg) 72%) fixed;
+  color: var(--gading);
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  line-height: 1.8;
+  letter-spacing: .01em;
+}
+
+h1, h2 { font-family: 'Cormorant Garamond', serif; font-weight: 500; line-height: 1.15; }
+h1 { font-size: clamp(2.6rem, 8vw, 4.2rem); }
+h1 em { color: var(--emas); }
+h2 { font-size: 2rem; margin-bottom: 16px; color: var(--emas); }
+
+.tombol {
+  padding: 14px 40px;
+  border: 1px solid var(--emas);
+  background: transparent;
+  color: var(--emas);
+  font: 400 .95rem 'Jost', sans-serif;
+  letter-spacing: .08em;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background .3s, color .3s;
+}
+.tombol:hover { background: var(--emas); color: #1a0a12; }
+:focus-visible { outline: 2px solid var(--emas); outline-offset: 4px; }
+
+/* ===== Layar awal: amplop ===== */
+#cover {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 42px;
+  padding: 24px;
+  text-align: center;
+  transition: opacity .7s;
+}
+#cover.hilang { opacity: 0; pointer-events: none; }
+
+.kalimat {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(1.8rem, 6vw, 2.6rem);
+  line-height: 1.35;
+}
+
+.amplop { position: relative; width: min(78vw, 320px); aspect-ratio: 4 / 3; perspective: 800px; }
+.amplop > div { position: absolute; }
+.badan { inset: 0; background: #3a0f20; border-radius: 3px; box-shadow: 0 20px 44px rgba(0, 0, 0, .6); }
+.kertas {
+  inset: 8% 8% 6%;
+  background: var(--gading);
+  border-radius: 2px;
+  z-index: 2;
+  transition: transform .8s .35s;
+}
+.depan {
+  inset: 0;
+  z-index: 3;
+  background: var(--anggur);
+  clip-path: polygon(0 0, 50% 52%, 100% 0, 100% 100%, 0 100%);
+  border-radius: 3px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 12%;
+  color: var(--emas);
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.4rem;
+}
+.flap {
+  left: 0; right: 0; top: 0;
+  height: 56%;
+  z-index: 4;
+  background: #5c1a35;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: top;
+  transition: transform .7s, z-index 0s .35s;
+}
+.amplop.buka .flap { transform: rotateX(180deg); z-index: 1; }
+.amplop.buka .kertas { transform: translateY(-34%); }
+
+/* ===== Beranda ===== */
+#beranda {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 72px 22px 80px;
+  text-align: center;
+  animation: muncul .9s;
+}
+@keyframes muncul { from { opacity: 0; } }
+.kecil { color: var(--emas); letter-spacing: .12em; margin-bottom: 10px; }
+.sub { margin: 20px 0 46px; opacity: .85; }
+.sub::after { content: ""; display: block; width: 56px; height: 1px; background: var(--emas); margin: 26px auto 0; }
+
+#kotak-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+@media (min-width: 560px) { #kotak-list { grid-template-columns: repeat(3, 1fr); } }
+
+.kotak {
+  aspect-ratio: 1 / .85;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 14px;
+  background: linear-gradient(160deg, rgba(212, 180, 131, .07), rgba(212, 180, 131, .01));
+  border: 1px solid rgba(212, 180, 131, .3);
+  border-radius: 2px;
+  color: var(--gading);
+  font: 500 1.3rem/1.25 'Cormorant Garamond', serif;
+  cursor: pointer;
+  transition: border-color .3s, background .3s;
+}
+.kotak::before { content: ""; width: 26px; height: 1px; background: var(--emas); opacity: .6; transition: width .3s, opacity .3s; }
+.kotak:hover { border-color: var(--emas); background: rgba(212, 180, 131, .1); }
+.kotak:hover::before, .kotak.dibuka::before { width: 44px; opacity: 1; }
+.kotak.dibuka { border-color: rgba(212, 180, 131, .75); }
+
+.ttd { margin-top: 52px; color: var(--emas); font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-style: italic; }
+
+/* ===== Pop up ===== */
+#popup {
+  width: min(92vw, 470px);
+  max-height: 90vh;
+  overflow-y: auto;
+  margin: auto;
+  padding: 34px 26px 28px;
+  background: #1c0912;
+  color: var(--gading);
+  border: 1px solid rgba(212, 180, 131, .5);
+  border-radius: 3px;
+  text-align: center;
+}
+#popup[open] { animation: naik .35s; }
+@keyframes naik { from { opacity: 0; transform: translateY(12px); } }
+#popup::backdrop { background: rgba(6, 0, 4, .8); }
+#popup-isi { margin-bottom: 26px; }
+#popup-isi p { white-space: pre-line; }
+#popup-isi ul { text-align: left; padding-left: 20px; }
+#popup-isi li { margin-bottom: 10px; }
+#popup-isi li::marker { color: var(--emas); }
+
+/* slide foto: tampil utuh (tidak terpotong) */
+.slider { overflow: hidden; border-radius: 2px; border: 1px solid rgba(212, 180, 131, .3); }
+.track { display: flex; transition: transform .45s; }
+.slide { min-width: 100%; }
+.slide img {
+  width: 100%;
+  height: 55vh;
+  max-height: 420px;
+  object-fit: contain;
+  display: block;
+  background: #12060d;
+}
+.slide p { margin: 12px 8px 6px; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.3rem; }
+.kontrol { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 14px; }
+.panah {
+  width: 38px; height: 38px;
+  border: 1px solid rgba(212, 180, 131, .6);
+  background: none;
+  color: var(--emas);
+  border-radius: 50%;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background .3s;
+}
+.panah:hover { background: rgba(212, 180, 131, .15); }
+.titik-wrap { display: flex; gap: 6px; }
+.titik { width: 6px; height: 6px; border-radius: 50%; background: rgba(244, 236, 225, .25); }
+.titik.aktif { background: var(--emas); }
+
+/* hati melayang: kecil, emas, samar */
+.hati {
+  position: fixed;
+  bottom: -40px;
+  pointer-events: none;
+  color: var(--emas);
+  opacity: .5;
+  animation: terbang linear forwards;
+}
+@keyframes terbang { to { transform: translateY(-110vh) rotate(25deg); opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .hati { display: none; }
+  #beranda, #popup[open] { animation: none; }
+  .tombol, .kotak, .kotak::before, .kertas, .flap, .track, #cover { transition: none; }
+}

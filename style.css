@@ -203,3 +203,21 @@ h2 { font-size: 2rem; margin-bottom: 16px; color: var(--emas); }
   #beranda, #popup[open] { animation: none; }
   .tombol, .kotak, .kotak::before, .kertas, .flap, .track, #cover { transition: none; }
 }
+
+/* tombol musik di pojok */
+.tombol-musik {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 5;
+  padding: 9px 18px;
+  background: rgba(18, 6, 13, .85);
+  border: 1px solid rgba(212, 180, 131, .5);
+  color: var(--emas);
+  font: 400 .8rem 'Jost', sans-serif;
+  letter-spacing: .06em;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background .3s, color .3s;
+}
+.tombol-musik:hover { background: var(--emas); color: #1a0a12; }

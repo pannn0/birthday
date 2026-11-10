@@ -1,8 +1,7 @@
 // ================= EDIT DI SINI =================
 
-// Lagu: file MP3 di folder musik. mulai & durasi dalam detik.
-// Kalau MP3-nya sudah kamu potong, isi mulai: 0
-const LAGU = { file: "musik/lagu.mp3", mulai: 45, durasi: 30 };
+// Lagu: file MP3 di folder musik (diputar penuh, lalu mengulang).
+const LAGU = { file: "musik/lagu.mp3" };
 
 // tipe: "teks" | "daftar" | "slide" | "rahasia"
 // Pakai \n untuk baris baru.
@@ -25,7 +24,7 @@ const pesan = [
   { judul: "Janjiku", tipe: "teks",
     isi: "Tulis janji kecil yang tulus untuk tahun depan." },
 
-  // Kalau ekstensi foto bukan .jpg, ganti di sini (mis. foto3.png)
+  // Kalau ekstensi foto bukan .jpeg, ganti di sini (mis. foto3.jpg)
   { judul: "Kenangan kita", tipe: "slide",
     slide: [
       { foto: "foto/foto1.jpeg", caption: "Tulis cerita foto pertama." },
@@ -54,25 +53,13 @@ const dibuka = new Set();
 
 // ---------- Lagu ----------
 const audio = new Audio();
-let fadeTimer;
-
-function hentikanLagu() {
-  clearInterval(fadeTimer);
-  audio.pause();
-}
+audio.loop = true; // habis -> ulang dari awal. Hapus baris ini kalau tidak mau diulang.
 
 function mainkanLagu() {
-  hentikanLagu();
   audio.src = LAGU.file;
+  audio.currentTime = 0;
   audio.volume = 1;
-  audio.addEventListener('loadedmetadata', () => { audio.currentTime = LAGU.mulai; }, { once: true });
   audio.play().catch(() => {});
-  // fade out 2 detik terakhir, lalu berhenti
-  fadeTimer = setInterval(() => {
-    const sisa = LAGU.mulai + LAGU.durasi - audio.currentTime;
-    if (sisa <= 0) hentikanLagu();
-    else if (sisa < 2) audio.volume = Math.max(0, sisa / 2);
-  }, 100);
 }
 
 // ---------- Bantuan ----------
@@ -129,17 +116,6 @@ function buatSlide(daftar) {
   pergi(0);
 
   wrap.append(slider, kontrol);
-
-  // Lagu langsung main saat pop up dibuka
-  const jeda = el('button', 'Jeda lagu', 'tombol');
-  jeda.style.marginTop = '18px';
-  jeda.onclick = () => {
-    if (audio.paused) { mainkanLagu(); jeda.textContent = 'Jeda lagu'; }
-    else { hentikanLagu(); jeda.textContent = 'Putar ulang lagu'; }
-  };
-  wrap.appendChild(jeda);
-  mainkanLagu();
-
   return wrap;
 }
 
@@ -172,16 +148,31 @@ pesan.forEach((p) => {
   list.appendChild(b);
 });
 
-// Tutup: tombol, klik area luar, atau Esc. Lagu ikut berhenti.
+// Tutup: tombol, klik area luar, atau Esc. Lagu tetap jalan.
 document.getElementById('popup-tutup').onclick = () => popup.close();
 popup.addEventListener('click', (e) => { if (e.target === popup) popup.close(); });
-popup.addEventListener('close', () => { hentikanLagu(); isiEl.replaceChildren(); });
+popup.addEventListener('close', () => { isiEl.replaceChildren(); });
 
 // ---------- Layar amplop ----------
+function buatTombolMusik() {
+  const b = el('button', 'Jeda musik', 'tombol-musik');
+  b.onclick = () => {
+    if (audio.paused) { audio.play().catch(() => {}); b.textContent = 'Jeda musik'; }
+    else { audio.pause(); b.textContent = 'Putar musik'; }
+  };
+  document.body.appendChild(b);
+}
+
 document.getElementById('btn-buka').onclick = () => {
+  mainkanLagu(); // lagu mulai tepat saat tombol ditekan
   amplop.classList.add('buka');
   setTimeout(() => cover.classList.add('hilang'), 1300);
-  setTimeout(() => { cover.hidden = true; beranda.hidden = false; hujanHati(); }, 2000);
+  setTimeout(() => {
+    cover.hidden = true;
+    beranda.hidden = false;
+    buatTombolMusik();
+    hujanHati();
+  }, 2000);
 };
 
 function hujanHati() {
